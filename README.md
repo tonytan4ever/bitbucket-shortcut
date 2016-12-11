@@ -5,7 +5,9 @@
 
 ## Installation
 
-TODO: Describe the installation process
+TODO: push to PyPI
+
+        pip install https://github.com/tonytan4ever/bitbucket-shortcut@master
 
 ## Usage
 

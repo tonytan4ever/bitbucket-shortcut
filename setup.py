@@ -12,17 +12,21 @@ install_requires = ['requests', 'GitPython']
 
 setup(
     name="BitbucketShortcuts",
-    version=VERSION,
-    description="Python Git Library",
+    version="0.0.1",
+    description="Python Bitbucket Shortcuts",
     author="Tony Tan",
     author_email="tonytan198211@gmail.com",
     url="https://github.com/tonytan4ever",
     packages=find_packages('.'),
     license="MIT License",
     install_requires=install_requires,
-    test_requirements=test_requires + install_requires,
     zip_safe=False,
     long_description="""BitbucketShortcuts provides command line utilities for Bitbucket operations""",
+    entry_points={
+        'console_scripts': [
+            'create_pr = bb_shortcuts.cmd.create_pr:wrapper'
+        ]
+    },
     classifiers=[
         # Picked from
         #   http://pypi.python.org/pypi?:action=list_classifiers

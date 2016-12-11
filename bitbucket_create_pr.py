@@ -10,18 +10,23 @@ import os
 import git
 import requests
 
+from utils import remote_parser
+
 
 log = logging.getLogger(__name__)
 
-USERNAME = '<your_username>'
-REPONAME = '<your_reponame>'
+REPO_PATH = "<your_repo_path>" or os.getcwd()
+REPO = git.Repo(REPO_PATH)
+
+USERNAME,REPONAME = remote_parser.get_user_and_repo_name(REPO)
 ##############################
 # Credentials here, caution.
-PASSWORD = '<your_password_or_apppassword>'
+# PASSWORD = '<your_password_or_apppassword>'
+PASSWORD = os.environ.get('BITBUCKET_PASS','<your_password_or_apppassword>' )
 ##############################
 
-REPO_PATH = "<your_repo_path>" or os.getcwd()
-TARGET_BRANCH = "<your_target_branch>"
+SOURCE_BRANCH = REPO.active_branch.name
+TARGET_BRANCH = "master"
 
 BITBUCKET_API_URL = (
     'https://bitbucket.org/api/2.0/repositories/'
@@ -29,7 +34,8 @@ BITBUCKET_API_URL = (
         username=USERNAME, reponame=REPONAME)
     
 
-def main(title, commit_message, close_source_branch=False):
+def main(title, commit_message, target_branch=TARGET_BRANCH,
+          close_source_branch=False):
     if not title:
         raise ValueError("Please input title for your PR")
     
@@ -38,22 +44,19 @@ def main(title, commit_message, close_source_branch=False):
     
     repo_full_name = '{username}/{reponame}'.format(
         username=USERNAME, reponame=REPONAME
-    )
-    
-    source_branch = git.Repo(REPO_PATH).active_branch
-    target_branch = TARGET_BRANCH
+    )    
     
     post_body = {
         "title": title, 
         "description": commit_message, 
         
         "source": { 
-              "branch": { "name": source_branch }, 
+              "branch": { "name": SOURCE_BRANCH }, 
               "repository": { "full_name": repo_full_name } 
         }, 
         
         "destination": { 
-              "branch": { "name": target_branch } 
+              "branch": { "name": TARGET_BRANCH } 
           }, 
           "close_source_branch": close_source_branch    
     }
@@ -76,7 +79,8 @@ def main(title, commit_message, close_source_branch=False):
     if resp.ok:
         # Echo the PR html url link:
         success_resp_dict = json.loads(resp.text)
-        log.info("PR create successful: {pr_url}".format(
+        log.info("PR create successful")
+        log.info("Review your PR: {pr_url}".format(
             pr_url=success_resp_dict["links"]["html"])
         )
     else:
@@ -87,12 +91,15 @@ def main(title, commit_message, close_source_branch=False):
 if __name__ == "__main__":
     parser = optparse.OptionParser()
     
-    parser.add_option('-t', '--title', action="store")
-    parser.add_option('-m', '--commit_message', action="store")
     parser.add_option('-c', '--close_source_branch',
                       action="store_true", default=False)
+    parser.add_option('-g', '--target_branch', action="store", 
+                      default="master")
+    parser.add_option('-m', '--commit_message', action="store")
+    parser.add_option('-t', '--title', action="store")
     
     options, remainder = parser.parse_args()
-    main(options.title, option.commit_message, option.close_source_branch)
+    main(options.title, options.commit_message, options.target_branch,
+         options.close_source_branch)
 
     

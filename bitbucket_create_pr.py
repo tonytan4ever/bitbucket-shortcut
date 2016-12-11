@@ -74,9 +74,11 @@ def main(title, commit_message, close_source_branch=False):
                          headers=post_headers)
     
     if resp.ok:
-        # Echo the PR url:
-        # log.info("PR create successful: {url".format())
-        pass
+        # Echo the PR html url link:
+        success_resp_dict = json.loads(resp.text)
+        log.info("PR create successful: {pr_url}".format(
+            pr_url=success_resp_dict["links"]["html"])
+        )
     else:
         log.info("Creating PR failed:")
         log.info(resp.text)

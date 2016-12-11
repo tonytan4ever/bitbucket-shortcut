@@ -1,6 +1,6 @@
 # A Series of bitbucket command to facilitate using its appPassword
 
-1. Creating a Pull Request
+1. Creating a Pull Request (create_pr)
 2. 
 
 ## Installation
@@ -9,7 +9,18 @@ TODO: Describe the installation process
 
 ## Usage
 
-TODO: Write usage instructions
+### To use create_pr script:
+
+* set BITBUCKET_USER and BITBUCKET_PASS environment variable
+* ```bash
+cd <your_bitbucket_repo_path>
+```
+* ```bash
+create_pr -h
+``` for help
+
+
+ 
 
 ## Contributing
 

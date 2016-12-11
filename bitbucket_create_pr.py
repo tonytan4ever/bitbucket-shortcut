@@ -1,6 +1,8 @@
 '''
 
 '''
+
+import json
 import logging
 import optparse
 import os
@@ -67,7 +69,17 @@ def main(title, commit_message, close_source_branch=False):
     log.debug("Post headers: {post_headers}".format(post_headers=post_headers))
     
     # Actual Post
-    # requests.post()
+    resp = requests.post(BITBUCKET_API_URL,
+                         data=json.dumps(post_body),
+                         headers=post_headers)
+    
+    if resp.ok:
+        # Echo the PR url:
+        # log.info("PR create successful: {url".format())
+        pass
+    else:
+        log.info("Creating PR failed:")
+        log.info(resp.text)
 
 
 if __name__ == "__main__":

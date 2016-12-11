@@ -12,12 +12,14 @@ TODO: Describe the installation process
 ### To use create_pr script:
 
 * set BITBUCKET_USER and BITBUCKET_PASS environment variable
-* ```bash
-cd <your_bitbucket_repo_path>
-```
-* ```bash
-create_pr -h
-``` for help
+* go to you repo:
+
+        cd <your_bitbucket_repo_path>
+
+* see the usage by:
+ 
+        create_pr -h
+
 
 
  

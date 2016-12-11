@@ -92,11 +92,15 @@ if __name__ == "__main__":
     parser = optparse.OptionParser()
     
     parser.add_option('-c', '--close_source_branch',
+                      help="whether to remove branch after merge",
                       action="store_true", default=False)
     parser.add_option('-g', '--target_branch', action="store", 
+                       help="name of target branch",
                       default="master")
-    parser.add_option('-m', '--commit_message', action="store")
-    parser.add_option('-t', '--title', action="store")
+    parser.add_option('-m', '--commit_message', action="store",
+                       help="description of the PR")
+    parser.add_option('-t', '--title', action="store",
+                      help="title of the PR",)
     
     options, remainder = parser.parse_args()
     main(options.title, options.commit_message, options.target_branch,

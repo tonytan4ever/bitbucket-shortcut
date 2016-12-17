@@ -58,7 +58,7 @@ def create_pr(title, commit_message, target_branch=TARGET_BRANCH,
         },
 
         "destination": {
-            "branch": {"name": TARGET_BRANCH}
+            "branch": {"name": target_branch}
         },
         "close_source_branch": close_source_branch
     }

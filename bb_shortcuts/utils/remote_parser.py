@@ -1,7 +1,10 @@
 '''
 Utility functions to parse the repo from a git repo object
 '''
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    import urllib.parse as urlparse
 
 
 def parse_bitbucket_path(parsed_remote_url):
@@ -18,8 +21,3 @@ def get_repo_org_and_name(repo_obj):
     remote_url = remote_description.split()[1]
     parsed_remote_url = urlparse.urlparse(remote_url)
     return parse_bitbucket_path(parsed_remote_url)
-
-
-
-    
-    
